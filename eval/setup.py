@@ -20,6 +20,10 @@ def load_model(model, model_info):
     API_MODEL = model_info.get("API_MODEL", [])
     if model in API_MODEL:
         return APIAgent(model)
+    elif "/" in model:
+        # Not an online API model: download it from Hugging Face and run it here.
+        from model.hf_agent import HFAgent
+        return HFAgent(model)
     else:
         raise ValueError(f"Unknown model: {model}")
 
